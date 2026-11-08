@@ -1,5 +1,4 @@
-import { useLang } from '../context/LangContext';
-import { t } from '../data/content';
+import { useContent } from '../context/ContentContext';
 
 const IconInstagram = () => (
   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
@@ -22,8 +21,7 @@ const IconTelegram = () => (
 );
 
 export default function Footer() {
-  const { lang } = useLang();
-  const ct = t[lang];
+  const ct = useContent();
 
   const socials = [
     { icon: <IconInstagram />, label: 'Instagram', href: 'https://www.instagram.com/mirai.school.kz/' },
@@ -33,16 +31,19 @@ export default function Footer() {
 
   return (
     <footer className="bg-[var(--bg-dark)] px-[10%] py-12 flex items-center justify-between gap-6 flex-wrap max-md:flex-col max-md:items-center max-md:text-center max-md:gap-4">
-      <div className="flex items-center gap-3.5">
-        <div
-          className="text-xl font-extralight text-white/50 tracking-wider"
-          style={{ fontFamily: "'Noto Serif JP', serif" }}
-        >
-          未来学校
-        </div>
-        <div className="w-px h-[22px] bg-white/[0.08]" />
-        <div className="text-[13px] tracking-[0.15em] uppercase text-white/25 font-medium">
-          Mirai School
+      <div className="flex items-center gap-3">
+        <img
+          src="/images/logo.png"
+          alt="Mirai School"
+          className="h-[38px] w-[38px] object-contain opacity-70"
+        />
+        <div>
+          <div className="text-[13px] font-semibold text-white/50 tracking-wide leading-none">
+            Mirai School
+          </div>
+          <div className="text-[10px] tracking-[0.12em] text-white/20 uppercase leading-none font-medium mt-[3px]">
+            Қазақ-Жапон Мектебі · Алматы
+          </div>
         </div>
       </div>
       <div className="text-xs text-white/15 tracking-wide">

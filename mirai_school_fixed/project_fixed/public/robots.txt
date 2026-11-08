@@ -1,0 +1,34 @@
+# ================================================
+#  robots.txt — Mirai School (miraischool.kz)
+# ================================================
+
+# Все поисковые роботы
+User-agent: *
+Allow: /
+
+# Не индексировать технические файлы
+Disallow: /src/
+Disallow: /*.json$
+Disallow: /*.ts$
+Disallow: /*.tsx$
+
+# Приоритет для Google
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 1
+
+# Приоритет для Yandex
+User-agent: Yandex
+Allow: /
+Crawl-delay: 2
+
+# Приоритет для Bing
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 1
+
+# Sitemap
+Sitemap: https://miraischooll.kz/sitemap.xml
+
+# Хост
+Host: https://miraischooll.kz

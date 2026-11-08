@@ -1,3 +1,5 @@
+import { Star } from 'lucide-react';
+
 interface ReviewCardProps {
   text: string;
   name: string;
@@ -5,42 +7,51 @@ interface ReviewCardProps {
   avatar: string;
 }
 
-const IconStar = () => (
-  <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-  </svg>
-);
-
 export default function ReviewCard({ text, name, role, avatar }: ReviewCardProps) {
   return (
-    <div className="card-cute card-glow bg-white p-9 rounded-[20px] border border-[var(--border-light)] relative hover:border-transparent">
-      <div className="flex gap-0.5 mb-4">
+    <div className="card-premium bg-white p-10 border border-[var(--border-light)] relative overflow-hidden hover:border-transparent group cursor-default flex flex-col">
+      {/* Top accent */}
+      <div className="absolute top-0 left-0 right-0 h-[3px] bg-[var(--torii-red)] opacity-0 group-hover:opacity-100 transition-opacity duration-400 rounded-t-[24px]" />
+
+      {/* Stars */}
+      <div className="flex gap-1 mb-5">
         {[...Array(5)].map((_, i) => (
-          <span key={i} className="text-[#D4A853]">
-            <IconStar />
-          </span>
+          <Star key={i} size={15} fill="currentColor" className="text-[var(--torii-red)]" />
         ))}
       </div>
+
+      {/* Quote text */}
       <div
-        className="text-lg leading-relaxed text-[var(--text-primary)] mb-6 italic"
-        style={{ fontFamily: "'Cormorant Garamond', serif" }}
+        className="text-[17px] leading-[1.75] text-[var(--text-primary)] mb-7 flex-1"
+        style={{ fontFamily: "'Cormorant Garamond', serif", fontStyle: 'italic' }}
       >
         {text}
       </div>
-      <div className="flex items-center gap-3.5">
-        <img src={avatar} alt={name} className="w-11 h-11 rounded-full object-cover border-2 border-[var(--accent-pale)]" />
+
+      {/* Author */}
+      <div className="flex items-center gap-4 pt-5 border-t border-[var(--border-light)]">
+        <img
+          src={avatar}
+          alt={name}
+          className="photo-styled w-12 h-12 rounded-full object-cover border-2 border-[var(--accent-pale)] group-hover:border-[var(--accent)] transition-colors duration-300 flex-shrink-0"
+        />
         <div>
-          <div className="text-[15px] text-[var(--text-primary)]" style={{ fontFamily: "'Noto Serif JP', serif" }}>
+          <div
+            className="text-[15px] font-semibold text-[var(--text-primary)] leading-tight"
+            style={{ fontFamily: "'Manrope', sans-serif" }}
+          >
             {name}
           </div>
-          <div className="text-[11px] text-[var(--text-muted)] tracking-wide font-medium">
+          <div className="text-[12px] text-[var(--text-muted)] tracking-wide font-medium mt-0.5">
             {role}
           </div>
         </div>
       </div>
+
+      {/* Decorative quote mark */}
       <div
-        className="absolute top-5 right-6 text-[80px] text-[var(--accent-soft)] leading-none pointer-events-none select-none"
-        style={{ fontFamily: "'Cormorant Garamond', serif", opacity: 0.4 }}
+        className="absolute top-4 right-6 text-[90px] text-[var(--accent-soft)] leading-none pointer-events-none select-none transition-colors duration-300 group-hover:text-[var(--accent-pale)]"
+        style={{ fontFamily: "'Cormorant Garamond', serif", opacity: 0.5 }}
       >
         &ldquo;
       </div>

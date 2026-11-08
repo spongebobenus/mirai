@@ -1,4 +1,6 @@
 import { useState, type FormEvent, type ChangeEvent } from 'react';
+import { useLang } from '../context/LangContext';
+import { t as content } from '../data/content';
 
 const GOOGLE_SCRIPT_URL =
   'https://script.google.com/macros/s/AKfycbz7f-qXLxPoLfJUAESgJamj4NW-XF_sIOPqF4AAr4V9BZyreFvNKVXBs6yu2K-xCjc/exec';
@@ -26,24 +28,27 @@ const IconCheck = () => (
   </svg>
 );
 
-const branches = [
-  {
-    value: 'Ораза Исаева (1–4 класс)',
-    name: 'Ораза Исаева',
-    addr: 'ул. Ораза Исаева, 3',
-    grades: '1–4 класс',
-    tag: 'Начальная школа',
-  },
-  {
-    value: 'Аскарова (1–9 класс)',
-    name: 'Аскарова',
-    addr: 'ул. Аскарова, 4А',
-    grades: '1–9 класс',
-    tag: 'Начальная + основная',
-  },
-];
-
 export default function ModalForm({ isOpen, onClose, t }: ModalFormProps) {
+  const { lang } = useLang();
+  const ct = content[lang];
+
+  const branches = [
+    {
+      value: 'Ораза Исаева (1–4)',
+      name: ct.branches.branch1.name,
+      addr: ct.branches.branch1.addr,
+      grades: ct.modal.branch1Grades,
+      tag: ct.branches.branch1.tag,
+    },
+    {
+      value: 'Аскарова (1–9)',
+      name: ct.branches.branch2.name,
+      addr: ct.branches.branch2.addr,
+      grades: ct.modal.branch2Grades,
+      tag: ct.branches.branch2.tag,
+    },
+  ];
+
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState('');
@@ -138,7 +143,7 @@ export default function ModalForm({ isOpen, onClose, t }: ModalFormProps) {
       }, 2500);
     } catch (err) {
       console.error('Ошибка отправки формы:', err);
-      setError('Не удалось отправить заявку. Попробуйте ещё раз.');
+      setError(ct.modal.error);
     } finally {
       setSubmitting(false);
     }
@@ -301,7 +306,7 @@ export default function ModalForm({ isOpen, onClose, t }: ModalFormProps) {
                 disabled={submitting}
                 className="w-full bg-[var(--accent)] text-white border-none py-4 text-xs tracking-[0.15em] uppercase font-semibold cursor-pointer transition-all mt-2 rounded-[14px] shadow-[0_8px_24px_rgba(59,130,246,0.28)] hover:-translate-y-0.5 hover:shadow-[0_12px_32px_rgba(59,130,246,0.35)] hover:bg-[var(--accent-light)] disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
               >
-                {submitting ? 'Отправка...' : t.modal.submit}
+                {submitting ? ct.modal.submitting : t.modal.submit}
               </button>
             </form>
           </>

@@ -1,6 +1,5 @@
 import { Link } from 'react-router';
-import { useLang } from '../context/LangContext';
-import { t } from '../data/content';
+import { useContent } from '../context/ContentContext';
 import SectionHeader from '../components/SectionHeader';
 import ToriiDivider from '../components/ToriiDivider';
 import ToriiBgDecoration from '../components/ToriiBgDecoration';
@@ -10,8 +9,7 @@ import ReviewCard from '../components/ReviewCard';
 import FAQItem from '../components/FAQItem';
 import ContactForm from '../components/ContactForm';
 
-import { IMAGES } from '../data/images';
-const reviewAvatars = IMAGES.reviews;
+import { useImages } from '../context/ContentContext';
 
 const IconPin = () => (
   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
@@ -41,8 +39,9 @@ const IconClock = () => (
 );
 
 export default function Admission() {
-  const { lang } = useLang();
-  const ct = t[lang];
+  const ct = useContent();
+  const imgs = useImages();
+  const reviewAvatars = imgs.reviews;
 
   return (
     <>
@@ -51,7 +50,7 @@ export default function Admission() {
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none">
           <ToriiGate width={240} height={140} opacity={0.06} showKanji={false} />
         </div>
-        <div className="absolute top-20 left-1/2 -translate-x-1/2 w-[500px] h-[500px] bg-[radial-gradient(circle,rgba(59,130,246,0.06)_0%,transparent_70%)] pointer-events-none" />
+        <div className="absolute top-20 left-1/2 -translate-x-1/2 w-[500px] h-[500px] bg-transparent pointer-events-none" />
 
         <div className="reveal relative z-10">
           <div className="text-xs text-white/30 mb-6">

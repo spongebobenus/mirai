@@ -1,3 +1,4 @@
+import { Check, MapPin } from 'lucide-react';
 import ToriiGate from './ToriiGate';
 
 interface BranchCardProps {
@@ -9,56 +10,63 @@ interface BranchCardProps {
   priceLabel: string;
   features: readonly string[];
   badge: string;
+  applyLabel: string;
   onApply: () => void;
 }
 
-export default function BranchCard({ num, tag, name, addr, price, priceLabel, features, badge, onApply }: BranchCardProps) {
+export default function BranchCard({ num, tag, name, addr, price, priceLabel, features, badge, applyLabel, onApply }: BranchCardProps) {
   return (
-    <div className="bg-[var(--bg-dark-alt)] border border-white/[0.06] p-12 relative transition-all duration-500 cursor-default rounded-[20px] overflow-hidden hover:bg-white/[0.04] hover:-translate-y-1.5 hover:shadow-[0_24px_48px_rgba(0,0,0,0.25)] hover:border-white/10 group">
+    <div className="bg-[#153A66] border border-white/[0.06] p-12 relative transition-all duration-500 cursor-default rounded-[24px] overflow-hidden hover:bg-[#1E4A80] hover:-translate-y-2 hover:shadow-[0_28px_56px_rgba(0,0,0,0.28)] hover:border-white/10 group">
       {/* Top accent bar */}
-      <div className="absolute top-0 left-0 right-0 h-[3px] bg-[var(--accent)] opacity-0 group-hover:opacity-100 transition-opacity duration-400" />
-      
+      <div className="absolute top-0 left-0 right-0 h-[3px] bg-[var(--accent)] opacity-0 group-hover:opacity-100 transition-opacity duration-400 rounded-t-[24px]" />
+
       {/* Torii watermark */}
-      <div className="absolute top-5 right-5 opacity-[0.02] pointer-events-none">
+      <div className="absolute top-5 right-5 opacity-[0.025] pointer-events-none">
         <ToriiGate width={100} height={60} showKanji={false} />
       </div>
 
       {/* Number */}
       <div
-        className="text-[72px] font-extralight text-white/[0.03] absolute top-5 right-8 leading-none"
+        className="text-[80px] font-extralight text-white/[0.03] absolute top-3 right-8 leading-none select-none"
         style={{ fontFamily: "'Noto Serif JP', serif" }}
       >
         {num}
       </div>
 
       {/* Tag */}
-      <div className="inline-block text-[10px] tracking-[0.2em] uppercase text-[var(--torii-red-light)] border border-[var(--torii-red)]/20 px-4 py-1.5 rounded-full mb-6 font-semibold bg-[var(--torii-red)]/[0.06]">
+      <div className="inline-block text-[10px] tracking-[0.2em] uppercase text-[var(--torii-red-light)] border border-[var(--torii-red)]/20 px-4 py-1.5 rounded-full mb-7 font-bold bg-[var(--torii-red)]/[0.06]">
         {tag}
       </div>
 
       {/* Name */}
-      <div className="text-2xl text-white mb-1.5 tracking-tight" style={{ fontFamily: "'Noto Serif JP', serif" }}>
+      <div className="text-[26px] font-semibold text-white mb-2 tracking-tight" style={{ fontFamily: "'Noto Serif JP', serif" }}>
         {name}
       </div>
 
       {/* Address */}
-      <div className="text-[13px] text-white/35 mb-7 tracking-wide">{addr}</div>
+      <div className="flex items-center gap-2 text-[13px] text-white/40 mb-8">
+        <MapPin size={13} className="text-white/25 flex-shrink-0" />
+        {addr}
+      </div>
 
       {/* Price */}
-      <div className="text-[56px] font-normal text-white leading-none mb-1" style={{ fontFamily: "'Cormorant Garamond', serif" }}>
-        {price}<span className="text-lg text-white/30" style={{ fontFamily: "'Inter', sans-serif" }}> 000 ₸</span>
+      <div className="text-[60px] font-normal text-white leading-none mb-1" style={{ fontFamily: "'Cormorant Garamond', serif" }}>
+        {price}<span className="text-[20px] text-white/30 font-light" style={{ fontFamily: "'Manrope', sans-serif" }}> 000 ₸</span>
       </div>
-      <div className="text-[11px] tracking-[0.15em] uppercase text-white/20 mb-8 font-medium">
+      <div className="text-[11px] tracking-[0.15em] uppercase text-white/20 mb-9 font-semibold">
         {priceLabel}
       </div>
 
+      {/* Divider */}
+      <div className="w-full h-px bg-white/[0.06] mb-7" />
+
       {/* Features */}
-      <ul className="flex flex-col gap-3.5 mb-9">
+      <ul className="flex flex-col gap-4 mb-10">
         {features.map((f, i) => (
-          <li key={i} className="flex items-start gap-3.5 text-sm text-white/50 leading-relaxed">
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" className="flex-shrink-0 mt-0.5">
-              <path d="M16.6667 5L7.5 14.1667L3.33333 10" stroke="#3B82F6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
+          <li key={i} className="flex items-start gap-3 text-[14px] text-white/55 leading-relaxed">
+            <span className="flex-shrink-0 mt-0.5 w-5 h-5 rounded-full bg-[var(--accent)]/15 flex items-center justify-center">
+              <Check size={11} className="text-[var(--accent-light)]" strokeWidth={2.5} />
+            </span>
             {f}
           </li>
         ))}
@@ -67,13 +75,13 @@ export default function BranchCard({ num, tag, name, addr, price, priceLabel, fe
       {/* CTA */}
       <button
         onClick={onApply}
-        className="inline-block px-8 py-3.5 border-[1.5px] border-white/12 text-white/60 text-xs tracking-[0.1em] uppercase font-semibold cursor-pointer transition-all rounded-full bg-transparent hover:bg-white hover:text-[var(--bg-dark)] hover:border-white hover:shadow-[0_8px_24px_rgba(0,0,0,0.15)]"
+        className="btn-cta w-full py-4 border-[1.5px] border-white/15 text-white/70 text-[13px] tracking-[0.08em] uppercase font-bold cursor-pointer rounded-full bg-transparent hover:bg-white hover:text-[var(--bg-dark)] hover:border-white hover:shadow-[0_10px_28px_rgba(0,0,0,0.2)]"
       >
-        Записаться на встречу
+        {applyLabel}
       </button>
 
       {/* Badge */}
-      <div className="absolute bottom-0 left-10 right-10 bg-[var(--accent)] text-white py-2.5 text-[11px] tracking-[0.15em] uppercase font-semibold text-center rounded-t-lg">
+      <div className="absolute bottom-0 left-8 right-8 bg-[var(--accent)] text-white py-2.5 text-[11px] tracking-[0.15em] uppercase font-bold text-center rounded-t-xl">
         {badge}
       </div>
     </div>

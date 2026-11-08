@@ -1,14 +1,13 @@
 import { useState } from 'react';
 import { Link } from 'react-router';
-import { useLang } from '../context/LangContext';
-import { t } from '../data/content';
+import { useContent } from '../context/ContentContext';
 import SectionHeader from '../components/SectionHeader';
 import ToriiBgDecoration from '../components/ToriiBgDecoration';
 import ModalForm from '../components/ModalForm';
 import { useCountUp } from '../hooks/useCountUp';
 
 const STAT_VALUES = [
-  { num: 310, suffix: '' },
+  { num: 407, suffix: '' },
   { num: 2, suffix: '' },
   { num: 20, suffix: '+' },
   { num: 98, suffix: '%' },
@@ -43,7 +42,7 @@ function SatisfactionBar({ label, pct }: { label: string; pct: string }) {
       </div>
       <div className="h-2 bg-[var(--border-color)] rounded-full overflow-hidden">
         <div
-          className="h-full bg-gradient-to-r from-[var(--accent)] to-[var(--accent-light)] rounded-full transition-all duration-1000"
+          className="h-full bg-[var(--accent)] rounded-full transition-all duration-1000"
           style={{ width: `${value}%` }}
         />
       </div>
@@ -52,8 +51,7 @@ function SatisfactionBar({ label, pct }: { label: string; pct: string }) {
 }
 
 export default function Results() {
-  const { lang } = useLang();
-  const ct = t[lang];
+  const ct = useContent();
   const rp = ct.resultsPage;
   const [activeTab, setActiveTab] = useState(0);
   const [modalOpen, setModalOpen] = useState(false);
@@ -66,7 +64,7 @@ export default function Results() {
       <section className="pt-[140px] pb-20 px-[10%] text-center bg-[var(--bg-dark)] relative overflow-hidden max-md:px-[5%] max-md:pt-[120px]">
         <ToriiBgDecoration position="top-left" size={300} opacity={0.04} rotate={-8} />
         <ToriiBgDecoration position="top-right" size={280} opacity={0.04} rotate={8} />
-        <div className="absolute top-20 left-1/2 -translate-x-1/2 w-[500px] h-[500px] bg-[radial-gradient(circle,rgba(59,130,246,0.06)_0%,transparent_70%)] pointer-events-none" />
+        <div className="absolute top-20 left-1/2 -translate-x-1/2 w-[500px] h-[500px] bg-transparent pointer-events-none" />
 
         <div className="reveal relative z-10">
           <div className="text-xs text-white/30 mb-6">
@@ -177,10 +175,10 @@ export default function Results() {
                 {/* Fill bar */}
                 <div className="mb-1 flex justify-between text-[11px] text-[var(--text-muted)]">
                   <span>{rp.branch1Count} {rp.ofLabel} {rp.branch1Capacity}</span>
-                  <span>80%</span>
+                  <span>77%</span>
                 </div>
                 <div className="h-2.5 bg-[var(--border-light)] rounded-full overflow-hidden">
-                  <div className="h-full bg-gradient-to-r from-[var(--accent)] to-[var(--torii-red)] rounded-full" style={{ width: '80%' }} />
+                  <div className="h-full bg-[var(--accent)] rounded-full" style={{ width: '77%' }} />
                 </div>
                 {/* Grade bar */}
                 <div className="mt-5 flex gap-1.5">
@@ -241,10 +239,10 @@ export default function Results() {
                 {/* Fill bar */}
                 <div className="mb-1 flex justify-between text-[11px] text-[var(--text-muted)]">
                   <span>{rp.branch2Count} {rp.ofLabel} {rp.branch2Capacity}</span>
-                  <span>60%</span>
+                  <span>72%</span>
                 </div>
                 <div className="h-2.5 bg-[var(--border-light)] rounded-full overflow-hidden">
-                  <div className="h-full bg-gradient-to-r from-[var(--accent)] to-[var(--torii-red)] rounded-full" style={{ width: '60%' }} />
+                  <div className="h-full bg-[var(--accent)] rounded-full" style={{ width: '72%' }} />
                 </div>
                 {/* Grade bar — proportional heights */}
                 <div className="mt-5 flex gap-1.5 items-end">

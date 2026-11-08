@@ -1,13 +1,11 @@
 import { useMemo } from 'react';
 
 const COLORS = [
+  '#3B82F6', // синий
+  '#DC2626', // красный
   '#60A5FA', // голубой
-  '#FFB7C5', // розовый
-  '#D4A853', // золотой
-  '#A78BFA', // фиолетовый
-  '#34D399', // мятный
-  '#FCD34D', // жёлтый
-  '#F472B6', // ярко-розовый
+  '#EF4444', // светло-красный
+  '#2563EB', // насыщенный синий
 ];
 
 // 4-лучевая звёздочка
@@ -56,7 +54,7 @@ export default function FloatingStars() {
             style={{
               animation: `twinkle ${s.twinkleDuration}s ease-in-out infinite`,
               filter: `drop-shadow(0 0 ${s.size * 0.6}px ${s.color})`,
-              opacity: 0.65,
+              opacity: 0.5,
             }}
           >
             <StarShape size={s.size} color={s.color} />

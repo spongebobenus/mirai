@@ -1,7 +1,7 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router';
 import { useLang } from '../context/LangContext';
-import { t } from '../data/content';
+import { useContent } from '../context/ContentContext';
 import SectionHeader from '../components/SectionHeader';
 import ToriiDivider from '../components/ToriiDivider';
 import ToriiGate from '../components/ToriiGate';
@@ -10,125 +10,176 @@ import BranchCard from '../components/BranchCard';
 import ModalForm from '../components/ModalForm';
 import StatsStrip from '../components/StatsStrip';
 import Marquee from '../components/Marquee';
-import { IMAGES } from '../data/images';
+import SchoolLife from '../components/SchoolLife';
+import { useImages } from '../context/ContentContext';
 
 export default function Home() {
   const { lang } = useLang();
-  const ct = t[lang];
+  const ct = useContent();
+  const imgs = useImages();
   const [modalOpen, setModalOpen] = useState(false);
+  const bgRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (!bgRef.current) return;
+      bgRef.current.style.transform = `scale(1.15) translateY(${window.scrollY * 0.18}px)`;
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   return (
     <>
       {/* ===== HERO SECTION ===== */}
-      <section className="min-h-[100dvh] grid grid-cols-2 max-md:grid-cols-1 relative overflow-hidden bg-[var(--bg)]">
-        {/* Gradient orbs */}
-        <div className="absolute top-[15%] right-[2%] w-[500px] h-[500px] rounded-full blur-[140px] opacity-[0.06] pointer-events-none" style={{ background: 'radial-gradient(circle, #F472B6, #3B82F6)' }} />
-        <div className="absolute bottom-[5%] left-[2%] w-[380px] h-[380px] rounded-full blur-[110px] opacity-[0.05] pointer-events-none" style={{ background: 'radial-gradient(circle, #D4A853, #DC2626)' }} />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] rounded-full blur-[160px] opacity-[0.035] pointer-events-none" style={{ background: 'radial-gradient(circle, #3B82F6, transparent)' }} />
+      <section className="relative min-h-[100dvh] flex items-center overflow-hidden" style={{ background: '#050A14' }}>
 
-        {/* Torii silhouette in background */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 z-[1] pointer-events-none w-[320px] h-[180px] opacity-[0.08]">
-          <ToriiGate width={320} height={180} showKanji={false} />
+        {/* ── Background: video + image fallback + parallax ── */}
+        <div
+          ref={bgRef}
+          className="absolute inset-0 will-change-transform"
+          style={{ transform: 'scale(1.15)' }}
+        >
+          <video
+            autoPlay
+            muted
+            loop
+            playsInline
+            poster={imgs.hero}
+            className="w-full h-full object-cover"
+          >
+            <source src={imgs.heroVideo} type="video/mp4" />
+            <img src={imgs.hero} alt="Mirai School" className="w-full h-full object-cover" />
+          </video>
         </div>
 
-        {/* Left column */}
-        <div className="flex flex-col justify-center pt-[120px] pb-20 pl-[10%] pr-[8%] relative z-[2] max-md:pt-28 max-md:pb-12 max-md:px-[5%]">
+        {/* ── Overlays ── */}
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{ background: 'linear-gradient(105deg, rgba(5,10,20,0.92) 0%, rgba(5,10,20,0.70) 55%, rgba(5,10,20,0.22) 100%)' }}
+        />
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{ background: 'linear-gradient(to top, rgba(5,10,20,0.80) 0%, transparent 45%)' }}
+        />
+
+        {/* ── Bottom accent line ── */}
+        <div className="absolute bottom-0 left-0 right-0 h-[3px] bg-[var(--torii-red)] opacity-90" />
+
+        {/* ── Decorative kanji background ── */}
+        <div
+          className="absolute right-[7%] top-1/2 -translate-y-1/2 leading-none select-none pointer-events-none max-lg:right-[3%] max-md:hidden"
+          style={{
+            fontFamily: "'Noto Serif JP', serif",
+            fontSize: 'clamp(120px, 18vw, 220px)',
+            fontWeight: 200,
+            color: 'rgba(255,255,255,0.028)',
+          }}
+        >
+          未来
+        </div>
+
+        {/* ── Content ── */}
+        <div className="relative z-10 px-[10%] pt-[110px] pb-[110px] max-w-5xl max-md:px-[5%] max-md:pt-28 max-md:pb-24">
+
           {/* Eyebrow */}
           <div
-            className="flex items-center gap-3.5 mb-8 opacity-0"
-            style={{ animation: 'fadeUp 0.8s 0.2s forwards' }}
+            className="flex items-center gap-3.5 mb-10 opacity-0"
+            style={{ animation: 'fadeUp 0.8s 0.1s forwards' }}
           >
-            <div className="w-8 h-0.5 bg-[var(--accent)] rounded-sm" />
-            <span className="text-xs tracking-[0.15em] text-[var(--accent)] font-semibold uppercase">
+            <div className="w-8 h-0.5 bg-[var(--torii-red)] rounded-sm" />
+            <span
+              className="text-xs font-semibold uppercase tracking-[0.18em]"
+              style={{ color: 'rgba(255,255,255,0.42)' }}
+            >
               {ct.hero.eyebrow}
             </span>
           </div>
 
-          {/* Hero Kanji */}
-          <div
-            className="opacity-0"
-            style={{ animation: 'fadeUp 0.9s 0.35s forwards' }}
+          {/* Main tagline — word-by-word reveal */}
+          <h1
+            className="leading-[1.0] tracking-tight mb-8"
+            style={{
+              fontFamily: "'Manrope', 'Noto Serif JP', sans-serif",
+              fontWeight: 800,
+              fontSize: 'clamp(52px, 9vw, 118px)',
+            }}
           >
-            <div
-              className="text-[clamp(52px,7vw,96px)] font-extralight text-[var(--text-primary)] leading-[0.95] tracking-tight"
-              style={{ fontFamily: "'Noto Serif JP', serif" }}
-            >
-              未来<span className="text-[var(--torii-red)] font-light">学</span>
-              <br />校
-            </div>
-          </div>
+            {ct.hero.tagline.split(' ').map((word, i, arr) => {
+              const isLast = i === arr.length - 1;
+              return (
+                <span
+                  key={lang + i}
+                  className="inline-block opacity-0"
+                  style={{
+                    animation: `fadeUp 0.65s ${0.28 + i * 0.16}s forwards`,
+                    marginRight: isLast ? 0 : '0.22em',
+                    color: isLast ? 'var(--torii-red)' : 'white',
+                  }}
+                >
+                  {word}
+                </span>
+              );
+            })}
+          </h1>
 
-          {/* Title */}
-          <div
-            className="text-[clamp(18px,2.2vw,26px)] font-normal text-[var(--text-secondary)] tracking-wide mt-3 mb-8 italic opacity-0"
-            style={{ fontFamily: "'Cormorant Garamond', serif", animation: 'fadeUp 0.8s 0.5s forwards' }}
-          >
-            {ct.hero.title}
-          </div>
-
-          {/* Description */}
+          {/* Subtitle */}
           <p
-            className="text-base leading-relaxed text-[var(--text-secondary)] max-w-[460px] mb-10 font-normal opacity-0"
-            style={{ animation: 'fadeUp 0.8s 0.65s forwards' }}
+            className="font-light mb-14 opacity-0 max-w-lg"
+            style={{
+              fontSize: 'clamp(16px, 1.8vw, 22px)',
+              color: 'rgba(255,255,255,0.50)',
+              letterSpacing: '0.01em',
+              lineHeight: 1.65,
+              animation: 'fadeUp 0.8s 0.9s forwards',
+            }}
           >
             {ct.hero.desc}
           </p>
 
-          {/* Buttons */}
+          {/* CTA Buttons */}
           <div
             className="flex gap-4 items-center flex-wrap opacity-0"
-            style={{ animation: 'fadeUp 0.8s 0.8s forwards' }}
+            style={{ animation: 'fadeUp 0.8s 1.1s forwards' }}
           >
+            <button
+              onClick={() => setModalOpen(true)}
+              className="btn-cta text-white text-[14px] tracking-[0.08em] font-semibold rounded-full cursor-pointer bg-[var(--torii-red)]"
+              style={{
+                padding: '17px 44px',
+                boxShadow: '0 6px 32px rgba(220,38,38,0.48)',
+              }}
+            >
+              {ct.cta.button}
+            </button>
             <Link
               to="/admission"
-              className="shimmer-btn inline-block bg-[var(--accent)] text-white px-8 py-3.5 text-sm tracking-wide font-semibold rounded-full no-underline transition-all shadow-[0_4px_14px_rgba(59,130,246,0.22)] hover:-translate-y-0.5 hover:shadow-[0_8px_28px_rgba(59,130,246,0.32)] hover:bg-[var(--accent-light)]"
+              className="btn-outline-hero inline-flex items-center gap-2 text-[14px] tracking-[0.06em] font-medium rounded-full no-underline"
+              style={{
+                color: 'rgba(255,255,255,0.75)',
+                padding: '16px 34px',
+                border: '1.5px solid rgba(255,255,255,0.22)',
+              }}
             >
-              {ct.hero.ctaPrimary}
-            </Link>
-            <Link
-              to="/branches"
-              className="inline-flex items-center gap-2 text-[var(--accent)] text-sm tracking-wide font-semibold px-6 py-3.5 rounded-full border-[1.5px] border-[var(--accent-soft)] no-underline transition-all bg-transparent hover:bg-[var(--accent-pale)] hover:gap-3"
-            >
-              {ct.hero.ctaSecondary}
-              <span className="text-base transition-transform">→</span>
+              {ct.hero.ctaExcursion}
+              <span className="text-base transition-transform duration-200 group-hover:translate-x-1">→</span>
             </Link>
           </div>
         </div>
 
-        {/* Right column */}
-        <div className="relative overflow-hidden flex items-center justify-center p-10 max-md:min-h-[400px] max-md:p-6">
-          <div className="relative w-full h-full min-h-[500px] rounded-[20px] overflow-hidden shadow-[var(--shadow-xl)] max-md:min-h-[350px]">
-            <img
-              src={IMAGES.hero}
-              alt="Mirai School"
-              className="w-full h-full object-cover block transition-transform duration-[12s] hover:scale-105"
-            />
-            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[rgba(15,42,77,0.12)] pointer-events-none" />
-            
-            {/* Torii overlay */}
-            <div
-              className="absolute -bottom-5 -right-8 z-[2] opacity-0"
-              style={{ animation: 'fadeUp 1s 0.8s forwards' }}
-            >
-              <ToriiGate width={180} height={110} animated />
-            </div>
-
-            {/* Seal */}
-            <div className="wiggle-sweet absolute bottom-8 left-8 z-[2] w-16 h-16 bg-[var(--torii-red)] text-white rounded-full flex items-center justify-center text-base tracking-wide shadow-[0_8px_32px_rgba(220,38,38,0.35)]"
-              style={{ fontFamily: "'Noto Serif JP', serif" }}
-            >
-              未来
-            </div>
-          </div>
-        </div>
-
-        {/* Scroll indicator */}
+        {/* ── Scroll indicator ── */}
         <div
-          className="absolute bottom-10 left-1/2 -translate-x-1/2 z-[2] flex flex-col items-center gap-2.5 opacity-0"
-          style={{ animation: 'fadeIn 1s 1.2s forwards' }}
+          className="absolute bottom-10 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-2.5 opacity-0"
+          style={{ animation: 'fadeIn 1s 1.6s forwards' }}
         >
-          <div className="w-px h-10 bg-[var(--accent)]" style={{ animation: 'scrollLine 2s ease-in-out infinite' }} />
-          <span className="text-[10px] tracking-[0.2em] text-[var(--text-muted)] uppercase font-medium">
+          <div
+            className="w-px h-10"
+            style={{ background: 'rgba(255,255,255,0.25)', animation: 'scrollLine 2s ease-in-out infinite' }}
+          />
+          <span
+            className="text-[9px] tracking-[0.22em] uppercase font-medium"
+            style={{ color: 'rgba(255,255,255,0.30)' }}
+          >
             {ct.hero.scroll}
           </span>
         </div>
@@ -141,16 +192,16 @@ export default function Home() {
       <StatsStrip />
 
       {/* ===== ABOUT PREVIEW SECTION ===== */}
-      <section className="py-[100px] px-[10%] bg-[var(--bg)] max-md:py-[72px] max-md:px-[6%]">
+      <section className="py-[120px] px-[10%] bg-white max-md:py-[80px] max-md:px-[6%]">
         <div className="grid grid-cols-2 gap-20 items-center max-lg:grid-cols-1 max-lg:gap-12">
           {/* Left - Photo */}
           <div className="reveal">
             <div className="relative">
               <div className="relative overflow-hidden rounded-[20px] shadow-[var(--shadow-xl)]">
                 <img
-                  src={IMAGES.classroom}
+                  src={imgs.classroom}
                   alt="Mirai School"
-                  className="w-full aspect-[4/5] object-cover block"
+                  className="photo-styled w-full aspect-[4/5] object-cover block"
                 />
               </div>
               {/* Decorative border */}
@@ -212,7 +263,7 @@ export default function Home() {
       </section>
 
       {/* ===== PILLARS SECTION ===== */}
-      <section className="py-[100px] px-[10%] bg-[var(--bg-warm)] max-md:py-[72px] max-md:px-[6%]">
+      <section className="py-[120px] px-[10%] max-md:py-[80px] max-md:px-[6%]" style={{ background: '#F0F4F8' }}>
         <div className="reveal">
           <SectionHeader
             en={ct.pillars.eyebrow}
@@ -230,10 +281,7 @@ export default function Home() {
       </section>
 
       {/* ===== BRANCHES PREVIEW SECTION ===== */}
-      <section className="py-[100px] px-[10%] bg-[var(--bg-dark)] text-white relative overflow-hidden max-md:py-[72px] max-md:px-[6%]">
-        {/* Background glow */}
-        <div className="absolute -top-[100px] -right-[100px] w-[400px] h-[400px] bg-[radial-gradient(circle,rgba(59,130,246,0.06)_0%,transparent_70%)] pointer-events-none" />
-        <div className="absolute -bottom-[100px] -left-[100px] w-[300px] h-[300px] bg-[radial-gradient(circle,rgba(220,38,38,0.04)_0%,transparent_70%)] pointer-events-none" />
+      <section className="py-[120px] px-[10%] bg-[var(--bg-dark)] text-white relative overflow-hidden max-md:py-[80px] max-md:px-[6%]">
 
         <div className="reveal relative z-10">
           <SectionHeader
@@ -254,6 +302,7 @@ export default function Home() {
               priceLabel={ct.branches.branch1.priceLabel}
               features={ct.branches.branch1.features}
               badge={ct.branches.branch1.badge}
+              applyLabel={ct.cta.button}
               onApply={() => setModalOpen(true)}
             />
           </div>
@@ -267,6 +316,7 @@ export default function Home() {
               priceLabel={ct.branches.branch2.priceLabel}
               features={ct.branches.branch2.features}
               badge={ct.branches.branch2.badge}
+              applyLabel={ct.cta.button}
               onApply={() => setModalOpen(true)}
             />
           </div>
@@ -281,6 +331,9 @@ export default function Home() {
           </Link>
         </div>
       </section>
+
+      {/* ===== SCHOOL LIFE GALLERY ===== */}
+      <SchoolLife />
 
       {/* ===== CTA SECTION ===== */}
       <section className="py-20 px-[10%] text-center bg-[var(--bg)] max-md:px-[5%]">
@@ -298,7 +351,8 @@ export default function Home() {
           </p>
           <button
             onClick={() => setModalOpen(true)}
-            className="shimmer-btn rainbow-pulse inline-block bg-[var(--torii-red)] text-white px-10 py-4 text-sm tracking-wide font-semibold rounded-full transition-all hover:-translate-y-0.5 hover:bg-[var(--torii-red-light)]"
+            className="btn-cta rainbow-pulse inline-block bg-[var(--torii-red)] text-white text-sm tracking-wide font-semibold rounded-full"
+            style={{ padding: '17px 52px', boxShadow: '0 6px 32px rgba(220,38,38,0.48)' }}
           >
             {ct.cta.button}
           </button>

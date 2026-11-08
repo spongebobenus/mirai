@@ -1,17 +1,16 @@
 import { useState } from 'react';
 import { Link } from 'react-router';
-import { useLang } from '../context/LangContext';
-import { t } from '../data/content';
+import { useContent } from '../context/ContentContext';
 import SectionHeader from '../components/SectionHeader';
 import ToriiDivider from '../components/ToriiDivider';
 import ToriiBgDecoration from '../components/ToriiBgDecoration';
 import BranchCard from '../components/BranchCard';
 import ModalForm from '../components/ModalForm';
-import { IMAGES } from '../data/images';
+import { useImages } from '../context/ContentContext';
 
 export default function Branches() {
-  const { lang } = useLang();
-  const ct = t[lang];
+  const ct = useContent();
+  const imgs = useImages();
   const [modalOpen, setModalOpen] = useState(false);
 
   const comparisonData = [
@@ -30,7 +29,7 @@ export default function Branches() {
       <section className="pt-[140px] pb-20 px-[10%] text-center bg-[var(--bg-dark)] relative overflow-hidden max-md:px-[5%] max-md:pt-[120px]">
         <ToriiBgDecoration position="top-left" size={300} opacity={0.04} rotate={-8} />
         <ToriiBgDecoration position="top-right" size={280} opacity={0.04} rotate={8} />
-        <div className="absolute top-20 left-1/2 -translate-x-1/2 w-[500px] h-[500px] bg-[radial-gradient(circle,rgba(59,130,246,0.06)_0%,transparent_70%)] pointer-events-none" />
+        <div className="absolute top-20 left-1/2 -translate-x-1/2 w-[500px] h-[500px] bg-transparent pointer-events-none" />
 
         <div className="reveal relative z-10">
           <div className="text-xs text-white/30 mb-6">
@@ -55,7 +54,7 @@ export default function Branches() {
           <div className="grid grid-cols-[1.2fr_1fr] gap-12 items-center max-lg:grid-cols-1 max-lg:gap-8">
             <div className="relative overflow-hidden rounded-[20px] shadow-[var(--shadow-xl)]">
               <img
-                src={IMAGES.branches.isayeva}
+                src={imgs.branches.isayeva}
                 alt={ct.branches.branch1.name}
                 className="w-full aspect-video object-cover block"
               />
@@ -69,6 +68,7 @@ export default function Branches() {
               priceLabel={ct.branches.branch1.priceLabel}
               features={ct.branches.branch1.features}
               badge={ct.branches.branch1.badge}
+              applyLabel={ct.cta.button}
               onApply={() => setModalOpen(true)}
             />
           </div>
@@ -88,11 +88,12 @@ export default function Branches() {
               priceLabel={ct.branches.branch2.priceLabel}
               features={ct.branches.branch2.features}
               badge={ct.branches.branch2.badge}
+              applyLabel={ct.cta.button}
               onApply={() => setModalOpen(true)}
             />
             <div className="relative overflow-hidden rounded-[20px] shadow-[var(--shadow-xl)] max-lg:order-first">
               <img
-                src={IMAGES.branches.askarova}
+                src={imgs.branches.askarova}
                 alt={ct.branches.branch2.name}
                 className="w-full aspect-video object-cover block"
               />

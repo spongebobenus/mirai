@@ -1,11 +1,12 @@
 import { useEffect } from 'react';
 import { useLocation } from 'react-router';
+import { useLang } from '../context/LangContext';
 
 export function useScrollReveal(threshold = 0.12) {
   const location = useLocation();
+  const { lang } = useLang();
 
   useEffect(() => {
-    // Small delay to let the new page render before observing
     const timer = setTimeout(() => {
       const revealEls = document.querySelectorAll('.reveal');
       if (revealEls.length === 0) return;
@@ -23,14 +24,14 @@ export function useScrollReveal(threshold = 0.12) {
       );
 
       revealEls.forEach((el) => {
-        // Reset visibility so elements re-animate on each page visit
-        el.classList.remove('visible');
-        observer.observe(el);
+        if (!el.classList.contains('visible')) {
+          observer.observe(el);
+        }
       });
 
       return () => observer.disconnect();
     }, 50);
 
     return () => clearTimeout(timer);
-  }, [location.pathname, threshold]);
+  }, [location.pathname, lang, threshold]);
 }

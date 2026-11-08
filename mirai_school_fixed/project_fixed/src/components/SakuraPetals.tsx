@@ -1,8 +1,8 @@
 import { useMemo } from 'react';
 
 const PETAL_COLORS = [
-  '#FFB7C5', '#F4A6B5', '#E8A0BF', '#F8C8DC',
-  '#FFD1DC', '#FFC0CB', '#FF91A4', '#FFAFC5',
+  '#FCA5A5', '#FECACA', '#F87171', '#FCA5A5',
+  '#93C5FD', '#BFDBFE', '#60A5FA', '#93C5FD',
 ];
 
 // Настоящая 5-лепестковая сакура
@@ -20,7 +20,7 @@ function SakuraSVG({ size, color }: { size: number; color: string }) {
           style={{ transformOrigin: '20px 20px' }}
         />
       ))}
-      <circle cx="20" cy="20" r="3" fill="#FFE4EC" opacity="0.9" />
+      <circle cx="20" cy="20" r="3" fill="#FFFFFF" opacity="0.9" />
     </svg>
   );
 }

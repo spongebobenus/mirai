@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router';
-import { useLang } from '../context/LangContext';
-import { t } from '../data/content';
+import { useContent } from '../context/ContentContext';
 import SectionHeader from '../components/SectionHeader';
 import ToriiDivider from '../components/ToriiDivider';
 import ToriiBgDecoration from '../components/ToriiBgDecoration';
@@ -9,14 +8,14 @@ import ToriiGate from '../components/ToriiGate';
 import MethodStep from '../components/MethodStep';
 import TeamCard from '../components/TeamCard';
 import ModalForm from '../components/ModalForm';
-import { IMAGES } from '../data/images';
-
-const galleryImages = IMAGES.gallery.map((src) => ({ src, caption: '' }));
-const teamPhotos = IMAGES.team;
+import SakuraTree from '../components/SakuraTree/SakuraTree';
+import { useImages } from '../context/ContentContext';
 
 export default function About() {
-  const { lang } = useLang();
-  const ct = t[lang];
+  const ct = useContent();
+  const imgs = useImages();
+  const galleryImages = imgs.gallery.map((src: string) => ({ src, caption: '' }));
+  const teamPhotos = imgs.team;
   const [modalOpen, setModalOpen] = useState(false);
 
   const stats = [
@@ -32,7 +31,7 @@ export default function About() {
       <section className="pt-[140px] pb-20 px-[10%] text-center bg-[var(--bg-dark)] relative overflow-hidden max-md:px-[5%] max-md:pt-[120px]">
         <ToriiBgDecoration position="top-left" size={300} opacity={0.04} rotate={-8} />
         <ToriiBgDecoration position="top-right" size={280} opacity={0.04} rotate={8} />
-        <div className="absolute top-20 left-1/2 -translate-x-1/2 w-[500px] h-[500px] bg-[radial-gradient(circle,rgba(59,130,246,0.06)_0%,transparent_70%)] pointer-events-none" />
+        <div className="absolute top-20 left-1/2 -translate-x-1/2 w-[500px] h-[500px] bg-transparent pointer-events-none" />
 
         {/* Breadcrumb */}
         <div className="reveal relative z-10">
@@ -83,7 +82,7 @@ export default function About() {
           <div className="reveal">
             <div className="relative">
               <div className="relative overflow-hidden rounded-[20px] shadow-[var(--shadow-xl)]">
-                <img src={IMAGES.classroom} alt="Mirai School" className="w-full aspect-[4/3] object-cover block" />
+                <img src={imgs.classroom} alt="Mirai School" className="w-full aspect-[4/3] object-cover block" />
               </div>
               <div
                 className="absolute -top-4 -left-4 -bottom-4 -right-4 border-2 border-[var(--accent-soft)] rounded-[20px] -z-10"
@@ -143,17 +142,13 @@ export default function About() {
         <div className="grid grid-cols-2 gap-20 mt-14 items-start max-lg:grid-cols-1 max-lg:gap-12">
           {/* Left - Visual */}
           <div className="reveal flex justify-center max-lg:static">
-            <div className="sticky top-[100px] flex flex-col items-center">
-              <ToriiGate width={280} height={170} animated color="#DC2626" showKanji kanjiText="道" />
-              <div className="mt-4 text-[11px] tracking-[0.2em] uppercase text-[var(--text-muted)] font-semibold text-center">
+            <div className="sticky top-[100px] flex flex-col items-center w-full">
+              <ToriiGate width={260} height={158} animated color="#DC2626" showKanji kanjiText="道" />
+              <div className="mt-3 text-[11px] tracking-[0.2em] uppercase text-[var(--text-muted)] font-semibold text-center">
                 Путь
               </div>
-              {/* Decorative dots */}
-              <div className="flex gap-6 mt-6">
-                <div className="w-3 h-3 rounded-full bg-[var(--accent)] shadow-[0_0_16px_rgba(59,130,246,0.3)]" />
-                <div className="w-3 h-3 rounded-full bg-[var(--torii-red)] shadow-[0_0_16px_rgba(220,38,38,0.3)]" />
-                <div className="w-3 h-3 rounded-full bg-[var(--gold)] shadow-[0_0_16px_rgba(212,168,83,0.3)]" />
-                <div className="w-3 h-3 rounded-full bg-[var(--accent-light)] shadow-[0_0_16px_rgba(96,165,250,0.3)]" />
+              <div className="w-full mt-2" style={{ height: 460 }}>
+                <SakuraTree particleCount={4000} petalCount={45} windStrength={1.6} />
               </div>
             </div>
           </div>
@@ -192,7 +187,7 @@ export default function About() {
                 alt={ct.gallery.captions[i]}
                 className="w-full h-full object-cover transition-transform duration-1000 hover:scale-[1.08]"
               />
-              <div className="absolute bottom-0 left-0 right-0 p-5 bg-gradient-to-t from-[rgba(15,42,77,0.75)] to-transparent text-white/90 text-[13px] font-medium opacity-0 translate-y-2 transition-all duration-500 hover:opacity-100 hover:translate-y-0">
+              <div className="absolute bottom-0 left-0 right-0 p-5 bg-[rgba(15,42,77,0.82)] text-white/90 text-[13px] font-medium opacity-0 translate-y-2 transition-all duration-500 hover:opacity-100 hover:translate-y-0">
                 {ct.gallery.captions[i]}
               </div>
             </div>
@@ -211,7 +206,7 @@ export default function About() {
         </div>
         <div className="grid grid-cols-3 gap-6 mt-14 max-lg:grid-cols-2 max-md:grid-cols-1">
           {ct.team.members.map((member, i) => (
-            <div key={member.name} className={`reveal reveal-d${Math.min(i + 1, 3)}`}>
+            <div key={i} className={`reveal reveal-d${Math.min(i + 1, 3)}`}>
               <TeamCard
                 photo={teamPhotos[i]}
                 name={member.name}

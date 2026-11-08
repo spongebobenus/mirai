@@ -13,7 +13,8 @@
 export const IMAGES = {
 
   // ── ГЛАВНАЯ СТРАНИЦА ────────────────────────────────────────
-  hero: '/images/hero-school.jpg',          // Большое фото в самом начале
+  hero: '/images/hero-school.jpg',          // Фото-заглушка (показывается пока нет видео)
+  heroVideo: '/images/kling_20260627_VIDEO_Cinematic__1150_0.mp4', // Видео для главного экрана
 
   // ── О НАС ───────────────────────────────────────────────────
   classroom: '/images/about-classroom.jpg', // Фото класса в секции «О нас»

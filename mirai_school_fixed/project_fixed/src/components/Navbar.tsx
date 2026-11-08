@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import { NavLink, useLocation } from 'react-router';
 import { useLang } from '../context/LangContext';
-import { t, type Lang } from '../data/content';
+import { type Lang } from '../data/content';
+import { useContent } from '../context/ContentContext';
 
 export default function Navbar() {
   const { lang, setLang } = useLang();
@@ -9,7 +10,7 @@ export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const location = useLocation();
 
-  const ct = t[lang];
+  const ct = useContent();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -59,16 +60,18 @@ export default function Navbar() {
         style={{ transitionTimingFunction: 'cubic-bezier(0.16, 1, 0.3, 1)' }}
       >
         {/* Logo */}
-        <NavLink to="/" className="flex items-center gap-3 no-underline transition-opacity hover:opacity-70">
+        <NavLink to="/" className="flex items-center gap-2.5 no-underline group">
+          <img
+            src="/images/logo.png"
+            alt="Mirai School"
+            className="h-[42px] w-[42px] object-contain flex-shrink-0 transition-transform duration-300 group-hover:scale-105"
+          />
           <div>
-            <div
-              className="text-2xl font-light text-[var(--accent)] tracking-wide leading-none"
-              style={{ fontFamily: "'Noto Serif JP', serif" }}
-            >
-              未来学校
+            <div className="text-[15px] font-semibold text-[var(--text-primary)] tracking-wide leading-none">
+              Mirai School
             </div>
-            <div className="text-[11px] tracking-[0.15em] text-[var(--text-muted)] uppercase leading-none font-medium mt-1">
-              Mirai School — Алматы
+            <div className="text-[10px] tracking-[0.12em] text-[var(--text-muted)] uppercase leading-none font-medium mt-[3px]">
+              Қазақ-Жапон Мектебі · Алматы
             </div>
           </div>
         </NavLink>

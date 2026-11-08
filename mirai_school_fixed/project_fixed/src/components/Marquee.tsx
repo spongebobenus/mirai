@@ -1,11 +1,9 @@
-import { useLang } from '../context/LangContext';
-import { t } from '../data/content';
+import { useContent } from '../context/ContentContext';
 
 const ICONS = ['桜', '学', '道', '心', '和', '美', '知', '誠'];
 
 export default function Marquee() {
-  const { lang } = useLang();
-  const ct = t[lang];
+  const ct = useContent();
 
   const items = ct.statsStrip.map((s, i) => ({
     label: s.label,
@@ -18,11 +16,11 @@ export default function Marquee() {
     <div className="relative overflow-hidden bg-white border-y border-[var(--border-light)] py-3.5 select-none">
       <div
         className="absolute left-0 top-0 h-full w-16 pointer-events-none z-10"
-        style={{ background: 'linear-gradient(to right, white, transparent)' }}
+        style={{ background: 'transparent' }}
       />
       <div
         className="absolute right-0 top-0 h-full w-16 pointer-events-none z-10"
-        style={{ background: 'linear-gradient(to left, white, transparent)' }}
+        style={{ background: 'transparent' }}
       />
       <div className="marquee-track">
         {doubled.map((item, idx) => (

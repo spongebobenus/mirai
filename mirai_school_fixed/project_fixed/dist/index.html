@@ -3,8 +3,22 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>未来学校 — Mirai School — Алматы</title>
-    <meta name="description" content="Жапон-қазақ мектебі Mirai School. Алматы қаласында. 2 филиал. 1–9 сынып. Тек қазақша оқыту.">
+    <title>Mirai School Almaty — Private Kazakh-Japanese School | 未来学校 · Қазақ-Жапон Мектебі</title>
+    <meta name="description" content="Mirai School — private Kazakh-Japanese school in Almaty. 2 branches, grades 1–9. Japanese teaching methodology, 16 students per class. Частная школа в Алматы с японской методикой обучения.">
+
+    <!-- SEO: Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Mirai School Almaty — Private Kazakh-Japanese School" />
+    <meta property="og:description" content="Private Kazakh-Japanese school in Almaty. Japanese teaching methodology, 2 branches, grades 1–9, 16 students per class." />
+    <meta property="og:image" content="/images/hero-school.jpg" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:locale:alternate" content="ru_RU" />
+    <meta property="og:locale:alternate" content="kk_KZ" />
+
+    <!-- SEO: Keywords -->
+    <meta name="keywords" content="Mirai School, Mirai School Almaty, private school Almaty, Japanese school Kazakhstan, Қазақ-Жапон Мектебі, частная школа Алматы, японская методика, мектеп Алматы" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://miraischooll.kz/" />
 
     <!-- ═══════════════════════════════════════════
          FAVICON — показывает твою иконку везде
@@ -31,11 +45,59 @@
     ════════════════════════════════════════════════ -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@200;300;400;500;600&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Inter:wght@300;400;500;600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <script type="module" crossorigin src="./assets/index-DUaopzSx.js"></script>
-    <link rel="stylesheet" crossorigin href="./assets/index-DAgJoo2B.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@200;300;400;500;600&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Manrope:wght@500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <script type="module" crossorigin src="/assets/index-Cs2IJRFk.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-CHuMHnnP.css">
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <!-- Preloader: виден до загрузки React, решает NO_FCP -->
+      <div id="site-preloader" style="
+        position:fixed;inset:0;
+        background:#0F2A4D;
+        display:flex;flex-direction:column;
+        align-items:center;justify-content:center;
+        z-index:9999;
+        transition:opacity 0.4s ease;
+      ">
+        <img
+          src="/images/logo.png"
+          alt="Mirai School"
+          width="72"
+          height="72"
+          style="object-fit:contain;margin-bottom:20px;"
+        />
+        <div style="
+          font-family:serif;
+          font-size:22px;
+          font-weight:300;
+          color:#ffffff;
+          letter-spacing:0.05em;
+        ">Mirai School</div>
+        <div style="
+          font-size:11px;
+          color:rgba(255,255,255,0.4);
+          letter-spacing:0.15em;
+          text-transform:uppercase;
+          margin-top:6px;
+        ">Алматы · Қазақ-Жапон Мектебі</div>
+        <div style="
+          width:36px;height:2px;
+          background:#DC2626;
+          margin-top:24px;
+          border-radius:2px;
+        "></div>
+      </div>
+    </div>
+    <script>
+      // Убираем preloader после загрузки React
+      window.addEventListener('load', function() {
+        var el = document.getElementById('site-preloader');
+        if (el) {
+          el.style.opacity = '0';
+          setTimeout(function() { el.remove(); }, 400);
+        }
+      });
+    </script>
   </body>
 </html>
